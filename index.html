@@ -8,14 +8,96 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/estilos.css">
+  <style>
+    .hero-section {
+      min-height: 100vh;
+      background-image: url('img/obra1_vaciado_losa.jpg.jpeg');
+      background-size: cover;
+      background-position: center top;
+      position: relative;
+      padding: 100px 0 60px;
+    }
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg,
+        rgba(26,0,0,0.88) 0%,
+        rgba(61,0,0,0.75) 50%,
+        rgba(26,0,0,0.60) 100%);
+    }
+    .hero-section .container { position: relative; z-index: 2; }
+    .perfil-foto {
+      width: 260px; height: 260px;
+      object-fit: cover; object-position: center top;
+      border-radius: 20px;
+      border: 4px solid #8b1a10;
+      box-shadow: 0 15px 40px rgba(139,26,16,0.35);
+      transition: 0.3s;
+    }
+    .perfil-foto:hover { transform: scale(1.03); }
+    .project-card { border-radius: 16px !important; overflow: hidden; transition: 0.3s; }
+    .project-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.15) !important; }
+    .project-card img { height: 220px; object-fit: cover; width: 100%; transition: 0.5s; }
+    .project-card:hover img { transform: scale(1.05); }
+    .galeria-section { background: #1a0000; padding: 80px 0; }
+    .galeria-titulo { color: #fff; }
+    .galeria-titulo::after { background: #e74c3c; }
+    .galeria-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    .galeria-item {
+      position: relative; overflow: hidden;
+      border-radius: 8px; cursor: pointer;
+      aspect-ratio: 1;
+    }
+    .galeria-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.4s; display: block; }
+    .galeria-item:hover img { transform: scale(1.08); }
+    .galeria-item .overlay {
+      position: absolute; inset: 0;
+      background: rgba(139,26,16,0);
+      display: flex; align-items: center; justify-content: center;
+      transition: 0.3s;
+    }
+    .galeria-item:hover .overlay { background: rgba(139,26,16,0.55); }
+    .galeria-item .overlay i { color: #fff; font-size: 2rem; opacity: 0; transition: 0.3s; }
+    .galeria-item:hover .overlay i { opacity: 1; }
+    .lightbox {
+      display: none; position: fixed; inset: 0; z-index: 9999;
+      background: rgba(0,0,0,0.92);
+      align-items: center; justify-content: center;
+    }
+    .lightbox.active { display: flex; }
+    .lightbox img { max-width: 90vw; max-height: 88vh; border-radius: 8px; }
+    .lightbox-close {
+      position: fixed; top: 18px; right: 24px;
+      font-size: 2.5rem; color: #fff; cursor: pointer;
+      background: none; border: none;
+    }
+    .lightbox-prev, .lightbox-next {
+      position: fixed; top: 50%; transform: translateY(-50%);
+      font-size: 2rem; color: #fff; cursor: pointer;
+      background: rgba(139,26,16,0.7); border: none;
+      padding: 10px 16px; border-radius: 8px;
+    }
+    .lightbox-prev { left: 12px; }
+    .lightbox-next { right: 12px; }
+    .navbar-logo { height: 46px; }
+    @media (max-width: 768px) {
+      .galeria-grid { grid-template-columns: repeat(2, 1fr); }
+      .perfil-foto { width: 200px; height: 200px; }
+    }
+  </style>
 </head>
 <body>
 
-  <!-- MENÚ DE NAVEGACIÓN -->
+  <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
     <div class="container">
-      <a class="navbar-brand fw-bold" href="#inicio">
-        <img src="https://lhingenieriasolutions.com/wp-content/uploads/2024/12/cropped-Screenshot_87-313x112.png" alt="LH Ingeniería" style="height:45px;">
+      <a class="navbar-brand" href="#inicio">
+        <img src="img/logo_lh.jpg.jpeg" alt="LH Ingeniería" class="navbar-logo">
       </a>
       <button class="navbar-toggler border-0" type="button"
         data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -27,36 +109,30 @@
           <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
           <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
           <li class="nav-item"><a class="nav-link" href="#proyectos">Proyectos</a></li>
+          <li class="nav-item"><a class="nav-link" href="#galeria">Galería</a></li>
           <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- INICIO / HERO -->
+  <!-- HERO -->
   <section id="inicio" class="hero-section d-flex align-items-center">
     <div class="container">
       <div class="row align-items-center">
-        <div class="col-lg-7 text-center text-lg-start">
+        <div class="col-lg-8 text-center text-lg-start">
           <p class="texto-ciudad">📍 Cajabamba, Cajamarca – Perú</p>
-          <h1 class="display-4 fw-bold" style="color: white;">
-           Soluciones Integrales<br>
-            <span style="color: #FF2020; border-bottom: 4px solid #FF2020; padding-bottom: 4px;">en Ingeniería</span>
+          <h1 class="display-4 fw-bold" style="color:#fff;">
+            Soluciones Integrales<br>
+            <span style="color:#ff3333;border-bottom:4px solid #ff3333;padding-bottom:4px;">en Ingeniería</span>
           </h1>
-          <p class="lead mt-3 mb-4">
-            <span style="color: #FFFFFF;">Ingeniería civil, eléctrica y construcción con estándares
-            técnicos y compromiso profesional. RUC: 20613473727</span>
+          <p class="lead mt-3 mb-4" style="color:#fff;">
+            Ingeniería civil, eléctrica y construcción con estándares
+            técnicos y compromiso profesional. RUC: 20613473727
           </p>
           <div class="d-flex gap-3 justify-content-center justify-content-lg-start flex-wrap">
             <a href="#servicios" class="btn btn-primary btn-lg px-5">Ver Servicios</a>
             <a href="#contacto" class="btn btn-outline-primary btn-lg px-5">Contactar</a>
-          </div>
-        </div>
-        <div class="col-lg-5 text-center mt-5 mt-lg-0">
-          <div class="hero-badge">
-            <i class="bi bi-building-check"></i>
-            <p class="mb-0 fw-bold mt-2">LH Ingeniería</p>
-            <small>CIP N° 208732</small>
           </div>
         </div>
       </div>
@@ -68,24 +144,24 @@
     <div class="container">
       <h2 class="section-title text-center mb-5">Sobre Nosotros</h2>
       <div class="row align-items-center g-4">
-        <div class="col-lg-5 text-center">
-          <div class="about-placeholder">
-            <i class="bi bi-person-badge-fill"></i>
-            <p class="mt-3 mb-0 fw-bold">Ing. Luis Helbert Otoya Medina</p>
-            <small>CIP N° 208732</small>
-          </div>
+        <div class="col-lg-4 text-center">
+          <img src="img/perfil_ingeniero.jpg.jpeg" alt="Ing. Luis Helbert Otoya Medina" class="perfil-foto">
+          <p class="mt-3 mb-0 fw-bold" style="color:#8b1a10;">Ing. Luis Helbert Otoya Medina</p>
+          <small class="text-muted">CIP N° 208732</small>
         </div>
-        <div class="col-lg-7">
+        <div class="col-lg-8">
           <h3 class="fw-bold">LH Ingeniería y Soluciones Integrales S.A.C.</h3>
           <p class="text-muted mt-3 texto-justificado">
             Somos una empresa de ingeniería y construcción con sede en Cajabamba, Cajamarca,
             comprometida con brindar soluciones técnicas de alta calidad en las áreas de
-            ingeniería civil, instalaciones eléctricas y construcción integral.
+            ingeniería civil, instalaciones eléctricas y construcción integral. Contamos con
+            amplia experiencia en proyectos residenciales, obras de infraestructura educativa
+            e industrial, y trabajos especializados en unidades mineras.
           </p>
           <p class="text-muted texto-justificado">
-            Contamos con respaldo técnico profesional registrado en el Colegio de Ingenieros del
-            Perú (CIP N° 208732) y con RUC activo N° 20613473727, operando con transparencia,
-            responsabilidad y enfoque en la satisfacción del cliente.
+            Contamos con respaldo técnico profesional registrado en el Colegio de Ingenieros
+            del Perú (CIP N° 208732) y con RUC activo N° 20613473727, operando con
+            transparencia, responsabilidad y enfoque en la satisfacción del cliente.
           </p>
           <div class="row mt-4">
             <div class="col-sm-6">
@@ -97,8 +173,8 @@
             </div>
             <div class="col-sm-6">
               <ul class="list-unstyled">
-                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Supervisión Técnica</li>
-                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Presupuestos y Metrados</li>
+                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Topografía y Levantamiento</li>
+                <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Proyectos Industriales</li>
                 <li><i class="bi bi-check-circle-fill text-primary me-2"></i>Expedientes Técnicos</li>
               </ul>
             </div>
@@ -113,23 +189,20 @@
     <div class="container">
       <h2 class="section-title text-center mb-5">Nuestros Servicios</h2>
       <div class="row g-4">
-
         <div class="col-md-4">
           <div class="card h-100 service-card border-0 shadow-sm text-center p-4">
             <div class="service-icon mb-3"><i class="bi bi-buildings"></i></div>
             <h5 class="fw-bold">Ingeniería Civil</h5>
-            <p class="text-muted">Diseño estructural, cimentaciones, losas, columnas y vigas según NTE E.060.</p>
+            <p class="text-muted">Diseño estructural, cimentaciones, losas nervadas, columnas y vigas según NTE E.060.</p>
           </div>
         </div>
-
         <div class="col-md-4">
           <div class="card h-100 service-card border-0 shadow-sm text-center p-4">
             <div class="service-icon mb-3"><i class="bi bi-lightning-charge"></i></div>
             <h5 class="fw-bold">Instalaciones Eléctricas</h5>
-            <p class="text-muted">Cuadros de carga Hidrandina, instalaciones domiciliarias e industriales.</p>
+            <p class="text-muted">Cuadros de carga Hidrandina, puesta a tierra, instalaciones domiciliarias e industriales.</p>
           </div>
         </div>
-
         <div class="col-md-4">
           <div class="card h-100 service-card border-0 shadow-sm text-center p-4">
             <div class="service-icon mb-3"><i class="bi bi-tools"></i></div>
@@ -137,7 +210,13 @@
             <p class="text-muted">Ejecución de obras civiles, mantenimiento, impermeabilización y estructuras metálicas.</p>
           </div>
         </div>
-
+        <div class="col-md-4">
+          <div class="card h-100 service-card border-0 shadow-sm text-center p-4">
+            <div class="service-icon mb-3"><i class="bi bi-geo-alt"></i></div>
+            <h5 class="fw-bold">Topografía</h5>
+            <p class="text-muted">Levantamiento topográfico con GPS geodésico, replanteo y elaboración de planos.</p>
+          </div>
+        </div>
         <div class="col-md-4">
           <div class="card h-100 service-card border-0 shadow-sm text-center p-4">
             <div class="service-icon mb-3"><i class="bi bi-clipboard-data"></i></div>
@@ -145,23 +224,13 @@
             <p class="text-muted">Presupuestos, metrados, proformas y documentos para licitaciones públicas.</p>
           </div>
         </div>
-
-        <div class="col-md-4">
-          <div class="card h-100 service-card border-0 shadow-sm text-center p-4">
-            <div class="service-icon mb-3"><i class="bi bi-eye"></i></div>
-            <h5 class="fw-bold">Supervisión de Obras</h5>
-            <p class="text-muted">Control de calidad y supervisión técnica en proyectos de infraestructura.</p>
-          </div>
-        </div>
-
         <div class="col-md-4">
           <div class="card h-100 service-card border-0 shadow-sm text-center p-4">
             <div class="service-icon mb-3"><i class="bi bi-house-gear"></i></div>
             <h5 class="fw-bold">Proyectos Residenciales</h5>
-            <p class="text-muted">Construcción y remodelación de viviendas en Cajabamba y la región.</p>
+            <p class="text-muted">Construcción y remodelación de viviendas en Cajabamba y la región Cajamarca.</p>
           </div>
         </div>
-
       </div>
     </div>
   </section>
@@ -171,49 +240,134 @@
     <div class="container">
       <h2 class="section-title text-center mb-5">Proyectos Realizados</h2>
       <div class="row g-4">
-
         <div class="col-md-4">
           <div class="card h-100 project-card border-0 shadow-sm">
-            <div class="project-img-placeholder">
-              <i class="bi bi-house-fill"></i>
-            </div>
+            <img src="img/obra5_losa_nervada.jpg.jpeg" alt="Losa Nervada">
             <div class="card-body">
-              <h5 class="card-title fw-bold">Casa Helbert</h5>
-              <p class="card-text text-muted">Proyecto residencial en Cajabamba. Diseño estructural con losa nervada, vigas y columnas según RNE.</p>
-              <span class="badge bg-amarillo">Construcción Civil</span>
+              <h5 class="card-title fw-bold">Losa Nervada — Cajabamba</h5>
+              <p class="card-text text-muted">Diseño y vaciado de losa nervada con maquinaria propia. Bloques de tecnopor y acero corrugado según RNE.</p>
+              <span class="badge bg-primary">Construcción Civil</span>
             </div>
           </div>
         </div>
-
         <div class="col-md-4">
           <div class="card h-100 project-card border-0 shadow-sm">
-            <div class="project-img-placeholder">
-              <i class="bi bi-lightning-fill"></i>
-            </div>
+            <img src="img/obra9_tierra_electrica.jpg.jpeg" alt="Puesta a Tierra">
             <div class="card-body">
-              <h5 class="card-title fw-bold">Cuadro de Cargas – TRANSRESOL</h5>
-              <p class="card-text text-muted">Cuadro de cargas Hidrandina con demanda máxima de 5.00 kW para cliente comercial.</p>
+              <h5 class="card-title fw-bold">Sistema de Puesta a Tierra</h5>
+              <p class="card-text text-muted">Instalación y medición con Telurómetro Digital PR-521. Resistencia obtenida: 11.60 Ω según norma.</p>
               <span class="badge bg-warning text-dark">Instalación Eléctrica</span>
             </div>
           </div>
         </div>
-
         <div class="col-md-4">
           <div class="card h-100 project-card border-0 shadow-sm">
-            <div class="project-img-placeholder">
-              <i class="bi bi-building"></i>
-            </div>
+            <img src="img/obra4_topografia_gps.jpg.jpeg" alt="Topografía GPS">
             <div class="card-body">
-              <h5 class="card-title fw-bold">Impermeabilización IE</h5>
-              <p class="card-text text-muted">Trabajos de impermeabilización y losa maciza en institución educativa en Cajabamba.</p>
-              <span class="badge bg-success">Mantenimiento</span>
+              <h5 class="card-title fw-bold">Levantamiento Topográfico GPS</h5>
+              <p class="card-text text-muted">Topografía con equipo GPS geodésico SOUTH para replanteo de obras y elaboración de planos en Cajabamba.</p>
+              <span class="badge bg-success">Topografía</span>
             </div>
           </div>
         </div>
-
+        <div class="col-md-4">
+          <div class="card h-100 project-card border-0 shadow-sm">
+            <img src="img/obra7_mantenimiento.jpg.jpeg" alt="Mantenimiento">
+            <div class="card-body">
+              <h5 class="card-title fw-bold">Mantenimiento de Infraestructura</h5>
+              <p class="card-text text-muted">Trabajos de mantenimiento, acabados y restauración en estructuras civiles con equipos especializados.</p>
+              <span class="badge bg-secondary">Mantenimiento</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 project-card border-0 shadow-sm">
+            <img src="img/obra15_mineria_aislamiento.jpg.jpeg" alt="Proyecto Minero">
+            <div class="card-body">
+              <h5 class="card-title fw-bold">Proyecto Minero — Huaron, Pasco</h5>
+              <p class="card-text text-muted">Aislamiento y mantenimiento mecánico-eléctrico en Unidad Minera Huaron a 4,678 m.s.n.m.</p>
+              <span class="badge" style="background:#e67e22;color:#fff">Proyecto Industrial</span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 project-card border-0 shadow-sm">
+            <img src="img/obra1_vaciado_losa.jpg.jpeg" alt="Vaciado Losa IE">
+            <div class="card-body">
+              <h5 class="card-title fw-bold">Vaciado de Losa — IE Cajabamba</h5>
+              <p class="card-text text-muted">Vaciado de losa maciza en institución educativa con grúa artesanal. Supervisión y control de calidad.</p>
+              <span class="badge bg-primary">Construcción Civil</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
+
+  <!-- GALERÍA -->
+  <section id="galeria" class="galeria-section">
+    <div class="container">
+      <h2 class="section-title galeria-titulo text-center mb-5">Galería de Obras</h2>
+      <div class="galeria-grid">
+        <div class="galeria-item" onclick="openLightbox(0)">
+          <img src="img/obra1_vaciado_losa.jpg.jpeg" alt="Vaciado losa" loading="lazy">
+          <div class="overlay"><i class="bi bi-zoom-in"></i></div>
+        </div>
+        <div class="galeria-item" onclick="openLightbox(1)">
+          <img src="img/obra2_losa_terminada.jpg.jpeg" alt="Losa terminada" loading="lazy">
+          <div class="overlay"><i class="bi bi-zoom-in"></i></div>
+        </div>
+        <div class="galeria-item" onclick="openLightbox(2)">
+          <img src="img/obra3_vaciado_equipo.jpg.jpeg" alt="Vaciado equipo" loading="lazy">
+          <div class="overlay"><i class="bi bi-zoom-in"></i></div>
+        </div>
+        <div class="galeria-item" onclick="openLightbox(3)">
+          <img src="img/obra5_losa_nervada.jpg.jpeg" alt="Losa nervada" loading="lazy">
+          <div class="overlay"><i class="bi bi-zoom-in"></i></div>
+        </div>
+        <div class="galeria-item" onclick="openLightbox(4)">
+          <img src="img/obra4_topografia_gps.jpg.jpeg" alt="Topografía GPS" loading="lazy">
+          <div class="overlay"><i class="bi bi-zoom-in"></i></div>
+        </div>
+        <div class="galeria-item" onclick="openLightbox(5)">
+          <img src="img/obra6_topografia_campo.jpg.jpeg" alt="Topografía campo" loading="lazy">
+          <div class="overlay"><i class="bi bi-zoom-in"></i></div>
+        </div>
+        <div class="galeria-item" onclick="openLightbox(6)">
+          <img src="img/obra7_mantenimiento.jpg.jpeg" alt="Mantenimiento" loading="lazy">
+          <div class="overlay"><i class="bi bi-zoom-in"></i></div>
+        </div>
+        <div class="galeria-item" onclick="openLightbox(7)">
+          <img src="img/obra8_mantenimiento2.jpg.jpeg" alt="Mantenimiento 2" loading="lazy">
+          <div class="overlay"><i class="bi bi-zoom-in"></i></div>
+        </div>
+        <div class="galeria-item" onclick="openLightbox(8)">
+          <img src="img/obra9_tierra_electrica.jpg.jpeg" alt="Puesta a tierra" loading="lazy">
+          <div class="overlay"><i class="bi bi-zoom-in"></i></div>
+        </div>
+        <div class="galeria-item" onclick="openLightbox(9)">
+          <img src="img/obra12_excavacion.jpg.jpeg" alt="Excavación" loading="lazy">
+          <div class="overlay"><i class="bi bi-zoom-in"></i></div>
+        </div>
+        <div class="galeria-item" onclick="openLightbox(10)">
+          <img src="img/obra15_mineria_aislamiento.jpg.jpeg" alt="Minería aislamiento" loading="lazy">
+          <div class="overlay"><i class="bi bi-zoom-in"></i></div>
+        </div>
+        <div class="galeria-item" onclick="openLightbox(11)">
+          <img src="img/obra17_mineria_motor.jpg.jpeg" alt="Motor minería" loading="lazy">
+          <div class="overlay"><i class="bi bi-zoom-in"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIGHTBOX -->
+  <div class="lightbox" id="lightbox">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <button class="lightbox-prev" onclick="changeLightbox(-1)">&#10094;</button>
+    <img id="lightboxImg" src="" alt="Obra LH Ingeniería">
+    <button class="lightbox-next" onclick="changeLightbox(1)">&#10095;</button>
+  </div>
 
   <!-- CONTACTO -->
   <section id="contacto" class="py-5 bg-light">
@@ -226,8 +380,8 @@
             <p class="text-muted mt-2">Contáctanos para una evaluación técnica. Trabajamos en Cajabamba y toda la región Cajamarca.</p>
             <ul class="list-unstyled mt-4">
               <li class="mb-3"><i class="bi bi-envelope-fill text-primary me-3 fs-5"></i>info@lhingenieriasolutions.com</li>
-              <li class="mb-3"><i class="bi bi-phone-fill text-primary me-3 fs-5"></i>+51 916714423 </li>
-              <li class="mb-3"><i class="bi bi-geo-alt-fill text-primary me-3 fs-5"></i>Cajabamba, Cajamarca – Perú</li>
+              <li class="mb-3"><i class="bi bi-phone-fill text-primary me-3 fs-5"></i>+51 959 270 123 / +51 916 714 423</li>
+              <li class="mb-3"><i class="bi bi-geo-alt-fill text-primary me-3 fs-5"></i>Jr. Odonovan C-4, Cajabamba / Trujillo — Perú</li>
               <li class="mb-3"><i class="bi bi-card-text text-primary me-3 fs-5"></i>RUC: 20613473727</li>
               <li class="mb-3"><i class="bi bi-person-check text-primary me-3 fs-5"></i>CIP N° 208732</li>
             </ul>
@@ -248,9 +402,10 @@
               <select class="form-control">
                 <option>Ingeniería Civil</option>
                 <option>Instalaciones Eléctricas</option>
+                <option>Topografía</option>
                 <option>Construcción Integral</option>
                 <option>Expediente Técnico</option>
-                <option>Supervisión de Obras</option>
+                <option>Proyecto Industrial / Minero</option>
                 <option>Otro</option>
               </select>
             </div>
@@ -276,13 +431,48 @@
     </div>
   </footer>
 
-  <!-- Botón flotante WhatsApp -->
-  <a href="https://wa.me/933300943" class="btn-whatsapp-floating" target="_blank">
+  <!-- WhatsApp flotante -->
+  <a href="https://wa.me/51959270123" class="btn-whatsapp-floating" target="_blank">
     <i class="bi bi-whatsapp"></i>
   </a>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
+  <script>
+    const galeriaImgs = [
+      'img/obra1_vaciado_losa.jpg.jpeg',
+      'img/obra2_losa_terminada.jpg.jpeg',
+      'img/obra3_vaciado_equipo.jpg.jpeg',
+      'img/obra5_losa_nervada.jpg.jpeg',
+      'img/obra4_topografia_gps.jpg.jpeg',
+      'img/obra6_topografia_campo.jpg.jpeg',
+      'img/obra7_mantenimiento.jpg.jpeg',
+      'img/obra8_mantenimiento2.jpg.jpeg',
+      'img/obra9_tierra_electrica.jpg.jpeg',
+      'img/obra12_excavacion.jpg.jpeg',
+      'img/obra15_mineria_aislamiento.jpg.jpeg',
+      'img/obra17_mineria_motor.jpg.jpeg',
+    ];
+    let currentIdx = 0;
+    function openLightbox(i) {
+      currentIdx = i;
+      document.getElementById('lightboxImg').src = galeriaImgs[i];
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    function changeLightbox(dir) {
+      currentIdx = (currentIdx + dir + galeriaImgs.length) % galeriaImgs.length;
+      document.getElementById('lightboxImg').src = galeriaImgs[currentIdx];
+    }
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') changeLightbox(1);
+      if (e.key === 'ArrowLeft') changeLightbox(-1);
+    });
+  </script>
 </body>
 </html>
+
