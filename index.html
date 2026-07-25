@@ -85,6 +85,8 @@
     .lightbox-prev { left: 12px; }
     .lightbox-next { right: 12px; }
     .navbar-logo { height: 46px; }
+    .servicio-mini { cursor: pointer; transition: 0.3s; }
+    .servicio-mini.activo { border: 2px solid #8b1a10 !important; background: #fdf2f2; }
     @media (max-width: 768px) {
       .galeria-grid { grid-template-columns: repeat(2, 1fr); }
       .perfil-foto { width: 200px; height: 200px; }
@@ -108,6 +110,7 @@
           <li class="nav-item"><a class="nav-link active" href="#inicio">Inicio</a></li>
           <li class="nav-item"><a class="nav-link" href="#nosotros">Nosotros</a></li>
           <li class="nav-item"><a class="nav-link" href="#servicios">Servicios</a></li>
+          <li class="nav-item"><a class="nav-link" href="#cotizador">Cotizar</a></li>
           <li class="nav-item"><a class="nav-link" href="#proyectos">Proyectos</a></li>
           <li class="nav-item"><a class="nav-link" href="#galeria">Galería</a></li>
           <li class="nav-item"><a class="nav-link" href="#contacto">Contacto</a></li>
@@ -229,6 +232,84 @@
             <div class="service-icon mb-3"><i class="bi bi-house-gear"></i></div>
             <h5 class="fw-bold">Proyectos Residenciales</h5>
             <p class="text-muted">Construcción y remodelación de viviendas en Cajabamba y la región Cajamarca.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COTIZADOR (JavaScript, DOM, Eventos, jQuery, Local Storage) -->
+  <section id="cotizador" class="py-5 bg-light">
+    <div class="container">
+      <h2 class="section-title text-center mb-4">Cotiza tu Proyecto en Línea</h2>
+      <p id="mensajeBienvenidaCotizador" class="text-center text-muted mb-5"></p>
+
+      <div class="row g-3 mb-4">
+        <div class="col-md-4">
+          <div class="card h-100 servicio-mini border-0 shadow-sm p-3 text-center" data-tipo="Ingeniería Civil">
+            <i class="bi bi-buildings fs-1" style="color:#8b1a10;"></i>
+            <h6 class="fw-bold mt-2 mb-0">Ingeniería Civil</h6>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 servicio-mini border-0 shadow-sm p-3 text-center" data-tipo="Instalaciones Eléctricas">
+            <i class="bi bi-lightning-charge fs-1" style="color:#8b1a10;"></i>
+            <h6 class="fw-bold mt-2 mb-0">Instalaciones Eléctricas</h6>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card h-100 servicio-mini border-0 shadow-sm p-3 text-center" data-tipo="Topografía">
+            <i class="bi bi-geo-alt fs-1" style="color:#8b1a10;"></i>
+            <h6 class="fw-bold mt-2 mb-0">Topografía</h6>
+          </div>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <div class="p-4 rounded-4 bg-white shadow-sm">
+            <h5 class="fw-bold mb-3">Datos de tu Cotización</h5>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Tipo de servicio</label>
+              <select id="tipoServicioCot" class="form-control">
+                <option value="">Selecciona una opción</option>
+                <option value="Ingeniería Civil">Ingeniería Civil</option>
+                <option value="Instalaciones Eléctricas">Instalaciones Eléctricas</option>
+                <option value="Topografía">Topografía</option>
+                <option value="Construcción Integral">Construcción Integral</option>
+                <option value="Expediente Técnico">Expediente Técnico</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Área aproximada (m²)</label>
+              <input type="number" id="areaProyecto" class="form-control" placeholder="Ej. 120">
+            </div>
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" id="visitaTecnica">
+              <label class="form-check-label" for="visitaTecnica">Incluir visita técnica</label>
+            </div>
+            <div class="form-check mb-3">
+              <input class="form-check-input" type="checkbox" id="urgente">
+              <label class="form-check-label" for="urgente">Requiere atención urgente</label>
+            </div>
+            <label class="form-label fw-semibold">Cuéntanos más sobre tu proyecto</label>
+            <textarea id="detalleProyecto" class="form-control" rows="3" maxlength="200" placeholder="Ej. Vivienda de 2 pisos en Cajabamba..."></textarea>
+            <small class="text-muted" id="contadorCaracteres">0 / 200 caracteres</small>
+            <button id="btnCotizar" class="btn btn-primary w-100 py-2 fw-semibold mt-3">
+              <i class="bi bi-calculator me-2"></i>Solicitar Cotización
+            </button>
+          </div>
+        </div>
+
+        <div class="col-lg-6">
+          <div id="resumenCotizacion" class="p-4 rounded-4 bg-white shadow-sm mb-3" style="display:none;">
+            <h5 class="fw-bold">Resumen en Vivo</h5>
+            <p id="textoResumen" class="text-muted mb-0"></p>
+          </div>
+          <div class="p-4 rounded-4 bg-white shadow-sm">
+            <h6 class="fw-bold">Cotizaciones Guardadas</h6>
+            <ul id="listaCotizaciones" class="list-group list-group-flush mt-3"></ul>
+            <button id="btnLimpiarTodo" class="btn btn-outline-danger btn-sm w-100 mt-3">Eliminar todas</button>
           </div>
         </div>
       </div>
@@ -432,10 +513,12 @@
   </footer>
 
   <!-- WhatsApp flotante -->
-  <a href="https://wa.me/51959270123" class="btn-whatsapp-floating" target="_blank">
+  <a href="https://wa.me/51933300943" class="btn-whatsapp-floating" target="_blank">
     <i class="bi bi-whatsapp"></i>
   </a>
 
+  <!-- jQuery (requerido para 3.6 Uso de jQuery) -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
     const galeriaImgs = [
@@ -472,7 +555,201 @@
       if (e.key === 'ArrowRight') changeLightbox(1);
       if (e.key === 'ArrowLeft') changeLightbox(-1);
     });
+
+    // ============================================================
+    // 3.3 / 3.4 / 3.5 — COTIZADOR: Variables, DOM y Eventos
+    // ============================================================
+
+    // --- Variables (const para elementos fijos, let para valores que cambian) ---
+    const selectTipo      = document.getElementById('tipoServicioCot');
+    const inputArea       = document.getElementById('areaProyecto');
+    const chkVisita       = document.getElementById('visitaTecnica');
+    const chkUrgente      = document.getElementById('urgente');
+    const textareaDetalle = document.getElementById('detalleProyecto');
+    const btnCotizar      = document.getElementById('btnCotizar');
+    const resumenDiv      = document.getElementById('resumenCotizacion');
+    const textoResumen    = document.getElementById('textoResumen');
+    let cotizacionesVisibles = true; // let: su valor puede cambiar durante la ejecución
+
+    // --- onload: revisa si ya hay cotizaciones guardadas en Local Storage ---
+    window.addEventListener('load', function () {
+      const guardadas = JSON.parse(localStorage.getItem('cotizacionesLH')) || [];
+      const mensaje = document.getElementById('mensajeBienvenidaCotizador');
+      mensaje.textContent = guardadas.length > 0
+        ? `Tienes ${guardadas.length} cotización(es) guardada(s). Revísalas más abajo.`
+        : 'Completa el formulario para recibir una cotización referencial.';
+      renderizarLista();
+    });
+
+    // --- getElementsByClassName: tarjetas de servicio (onmouseover / onmouseout / onclick) ---
+    const tarjetasServicio = document.getElementsByClassName('servicio-mini');
+    for (let tarjeta of tarjetasServicio) {
+      tarjeta.onmouseover = function () {
+        this.style.boxShadow = '0 15px 30px rgba(139,26,16,0.25)';
+        this.style.transform = 'translateY(-5px)';
+      };
+      tarjeta.onmouseout = function () {
+        this.style.boxShadow = '';
+        this.style.transform = '';
+      };
+      tarjeta.onclick = function () {
+        selectTipo.value = this.dataset.tipo;
+        selectTipo.dispatchEvent(new Event('change'));
+      };
+    }
+
+    // --- onchange: resalta la tarjeta elegida y actualiza la vista previa ---
+    selectTipo.onchange = function () {
+      for (let tarjeta of tarjetasServicio) {
+        tarjeta.classList.toggle('activo', tarjeta.dataset.tipo === this.value);
+      }
+      actualizarVistaPrevia();
+    };
+    inputArea.onchange = actualizarVistaPrevia;
+    chkVisita.onchange = actualizarVistaPrevia;
+    chkUrgente.onchange = actualizarVistaPrevia;
+
+    // --- onkeydown: contador de caracteres en tiempo real ---
+    textareaDetalle.onkeydown = function () {
+      setTimeout(() => {
+        document.getElementById('contadorCaracteres').textContent =
+          `${this.value.length} / 200 caracteres`;
+        actualizarVistaPrevia();
+      }, 0);
+    };
+
+    function actualizarVistaPrevia() {
+      const tipo = selectTipo.value || 'sin especificar';
+      const area = inputArea.value ? `${inputArea.value} m²` : 'área no indicada';
+      const extras = [];
+      if (chkVisita.checked) extras.push('visita técnica');
+      if (chkUrgente.checked) extras.push('atención urgente');
+      const detalle = textareaDetalle.value.trim();
+      let texto = `Servicio: ${tipo}. Área: ${area}.`;
+      if (extras.length > 0) texto += ` Extras: ${extras.join(', ')}.`;
+      if (detalle !== '') texto += ` Detalle: ${detalle}`;
+      textoResumen.textContent = texto;
+    }
+
+    // --- onclick del botón principal ---
+    btnCotizar.onclick = function () {
+      procesarCotizacion();
+    };
+
+    // --- Función nombrada: valida, usa prompt()/alert()/console.log() ---
+    function procesarCotizacion() {
+      const tipo = selectTipo.value;         // string
+      const area = Number(inputArea.value);  // number
+      const urgente = chkUrgente.checked;    // boolean
+
+      // Condicionales de validación
+      if (tipo === "" || inputArea.value === "") {
+        alert("Por favor selecciona un servicio e ingresa el área aproximada.");
+        return;
+      }
+      if (isNaN(area) || area <= 0) {
+        alert("El área debe ser un número mayor a 0.");
+        return;
+      }
+
+      // prompt(): dato adicional opcional (puede devolver null si se cancela)
+      let referencia = prompt("Ingresa un código de referencia para tu cotización (opcional):");
+      if (referencia === null || referencia.trim() === "") {
+        referencia = "Sin referencia";
+      }
+
+      const datos = {
+        tipo, area, urgente,
+        visita: chkVisita.checked,
+        detalle: textareaDetalle.value.trim() || "Sin detalle adicional",
+        referencia
+      };
+
+      console.log("Datos de la cotización:", datos); // depuración en consola
+
+      const texto = `${datos.tipo} — ${datos.area} m² — Ref: ${datos.referencia}` +
+        (datos.urgente ? ' [URGENTE]' : '');
+
+      guardarCotizacion(texto);
+
+      // getElementsByTagName: bloquea momentáneamente todos los botones mientras procesa
+      const botones = document.getElementsByTagName('button');
+      for (let btn of botones) btn.disabled = true;
+      setTimeout(() => { for (let btn of botones) btn.disabled = false; }, 400);
+
+      resumenDiv.style.display = 'block';
+      $('#resumenCotizacion').hide().fadeIn(500); // jQuery: fadeIn()
+
+      alert(`¡Gracias! Hemos registrado tu solicitud de ${datos.tipo}.`);
+    }
+
+    // ============================================================
+    // 3.7 — LOCAL STORAGE
+    // ============================================================
+    function guardarCotizacion(texto) {
+      const guardadas = JSON.parse(localStorage.getItem('cotizacionesLH')) || [];
+      guardadas.push(texto);
+      localStorage.setItem('cotizacionesLH', JSON.stringify(guardadas)); // setItem()
+      renderizarLista();
+    }
+    function obtenerCotizaciones() {
+      return JSON.parse(localStorage.getItem('cotizacionesLH')) || []; // getItem()
+    }
+    function eliminarCotizacion(index) {
+      const guardadas = obtenerCotizaciones();
+      guardadas.splice(index, 1);
+      localStorage.setItem('cotizacionesLH', JSON.stringify(guardadas)); // removeItem() se usa para un elemento individual vía splice + set; localStorage.clear() queda documentado como alternativa que borraría TODO lo guardado por el sitio.
+    }
+
+    // ============================================================
+    // 3.6 — jQUERY: render de la lista + eventos delegados + efectos
+    // ============================================================
+    $(document).ready(function () {
+      window.renderizarLista = function () {
+        const guardadas = obtenerCotizaciones();
+        const $lista = $('#listaCotizaciones');
+        $lista.empty();
+        if (guardadas.length === 0) {
+          $lista.append('<li class="list-group-item text-muted">Aún no tienes cotizaciones guardadas.</li>');
+          return;
+        }
+        guardadas.forEach(function (item, index) {
+          const $li = $(`
+            <li class="list-group-item d-flex justify-content-between align-items-center" style="display:none;">
+              <span>${item}</span>
+              <button class="btn btn-sm btn-outline-danger btn-eliminar-cot" data-index="${index}">
+                <i class="bi bi-trash"></i>
+              </button>
+            </li>
+          `);
+          $lista.append($li);
+          $li.fadeIn(400); // jQuery: fadeIn()
+        });
+      };
+
+      // Contador: se oculta con hide() si el textarea está vacío, show() si tiene texto
+      $('#detalleProyecto').on('keyup', function () {
+        $('#contadorCaracteres').toggle($(this).val().length > 0); // hide()/show() internamente
+      });
+
+      // Eliminar un registro (delegado porque los <li> se crean dinámicamente)
+      $('#listaCotizaciones').on('click', '.btn-eliminar-cot', function () {
+        const index = $(this).data('index');
+        $(this).closest('li').fadeOut(300, function () { // jQuery: fadeOut()
+          eliminarCotizacion(index);
+          renderizarLista();
+        });
+      });
+
+      // Eliminar todas
+      $('#btnLimpiarTodo').on('click', function () {
+        $('#listaCotizaciones li').fadeOut(300, function () {
+          localStorage.removeItem('cotizacionesLH'); // removeItem()
+          renderizarLista();
+        });
+        $('#resumenCotizacion').fadeOut(300); // jQuery: fadeOut()
+      });
+    });
   </script>
 </body>
 </html>
-
