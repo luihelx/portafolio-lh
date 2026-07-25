@@ -304,7 +304,10 @@
         <div class="col-lg-6">
           <div id="resumenCotizacion" class="p-4 rounded-4 bg-white shadow-sm mb-3" style="display:none;">
             <h5 class="fw-bold">Resumen en Vivo</h5>
-            <p id="textoResumen" class="text-muted mb-0"></p>
+            <p id="textoResumen" class="text-muted mb-3"></p>
+            <a id="btnWhatsappCotizacion" href="#" target="_blank" class="btn w-100 fw-semibold" style="background:#25D366;color:#fff;" >
+              <i class="bi bi-whatsapp me-2"></i>Enviar cotización por WhatsApp
+            </a>
           </div>
           <div class="p-4 rounded-4 bg-white shadow-sm">
             <h6 class="fw-bold">Cotizaciones Guardadas</h6>
@@ -671,6 +674,17 @@
         (datos.urgente ? ' [URGENTE]' : '');
 
       guardarCotizacion(texto);
+
+      // Arma el enlace de WhatsApp con el resumen ya redactado (número del negocio: 933300943)
+      const mensajeWhatsapp =
+        `Hola, quisiera solicitar una cotización de *${datos.tipo}*.%0A` +
+        `Área aproximada: ${datos.area} m².%0A` +
+        (datos.visita ? `Incluir visita técnica.%0A` : '') +
+        (datos.urgente ? `Es urgente.%0A` : '') +
+        `Detalle: ${encodeURIComponent(datos.detalle)}.%0A` +
+        `Referencia: ${encodeURIComponent(datos.referencia)}`;
+      document.getElementById('btnWhatsappCotizacion').href =
+        `https://wa.me/51933300943?text=${mensajeWhatsapp}`;
 
       // getElementsByTagName: bloquea momentáneamente todos los botones mientras procesa
       const botones = document.getElementsByTagName('button');
